@@ -1,19 +1,19 @@
 @students = []
 
 
-def print_menu
-  puts "1. Input the students"
-  puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
-  puts "9. Exit"
-
 def interactive_menu
   loop do
     print_menu
     process(STDIN.gets.chomp)
   end
 end
+
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "3. Save the list to students.csv"
+  puts "4. Load the list from students.csv"
+  puts "9. Exit"
 
 end
 def show_students
@@ -88,7 +88,7 @@ def add_cohort
   end
   puts
   puts "Please enter the month number of the cohort they would like to join".center(@width)
-  cohort = gets.chomp
+  cohort = STDIN.gets.chomp
   case cohort
   when "1"
     cohort = :January
@@ -130,15 +130,18 @@ def input_students
     name = STDIN.gets.chomp
     cohort = add_cohort
     puts "Please enter the country of birth".center(@width)
-    country_of_birth = gets.chomp
+    country_of_birth = STDIN.gets.chomp
     hobbies = add_hobbies
-    @students << { name: name, cohort: cohort.to_sym, country_of_birth: country_of_birth, hobbies: hobbies }
+    add_student(name, cohort, country_of_birth, hobbies)
     puts "Now we have #{pluralize_students @students.count}".center(@width)
     continue = create_new_student
   end
   @students
 end
 
+def add_student(name, cohort, country_of_birth, hobbies)
+  @students << {name: name, cohort: cohort.to_sym, country_of_birth: country_of_birth, hobbies: hobbies}
+end
 def add_hobbies
   hobbies = []
   puts "Please enter student's hobbies".center(@width)
@@ -146,9 +149,9 @@ def add_hobbies
   hobby = gets.chomp
   while !hobby.empty?
     hobbies << hobby
-    hobby = gets.chomp
+    hobby = STDIN.gets.chomp
   end
-  hobbies
+  hobbies.join(",")
 end
 def print_header
   if !@students.empty?
@@ -244,7 +247,7 @@ def load_students(filename = "students.csv")
   file = File.open("filename", "r")
   file.readlines.each do |line|
   name, cohort = line.chomp.split(',')
-    @students << {name: name, cohort: cohort.to_sym}
+    add_student(name, cohort, country_of_birth, hobbies)
   end
   file.close
 end
