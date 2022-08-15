@@ -1,3 +1,29 @@
+def interactive_menu
+  students = []
+  loop do
+  # print the menu and ask the user what to do
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "9. Exit"
+  #read the input and save it into a variable
+  selection = gets.chomp
+  # do what the user has asked
+  case selection
+  when "1"
+    students = input_students
+  when "2"
+    print_header
+    print(students)
+    print_footer(students)
+  when "9"
+    exit #causes program to terminate
+  else
+    puts "I don't know what you meant, try again"
+  #repeatfrom step 1
+  end
+end
+end
+
 def pluralize_students(n)
   if n == 1 then "#{n} great student" else "#{n} great students" end
 end
@@ -116,7 +142,7 @@ def print_header
   end
 end
 
-def print_student_list(students)
+def print(students)
   if students.empty?
     puts "no students available".center(@width)
   else
@@ -189,7 +215,13 @@ def print_footer(students)
 end
 
 
-@students = input_students
-print_header
-print_student_list(@students)
-print_footer(@students)
+interactive_menu
+
+
+#@students = input_students
+#print_header
+#print_student_list(@students)
+#print_footer(@students)
+
+
+
