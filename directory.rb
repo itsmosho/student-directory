@@ -146,7 +146,7 @@ end
 
 def print_by_first_letter(students)
   puts "Student names beginning with: (Please enter a letter)".center(@width)
-  letter = gets.chomp
+  letter = gets.strip
   number_of_matches = 0
   students.each do |student|
     if student[:name].start_with?(letter.upcase, letter.downcase)
