@@ -1,13 +1,5 @@
 @students = []
 
-def load_students
-  file = File.open("students.csv", "r")
-  file.readlines.each do |line|
-  name, cohort = line.chomp.split(',')
-    @students << {name: name, cohort: cohort.to_sym}
-  end
-  file.close
-end
 
 def print_menu
   puts "1. Input the students"
@@ -15,6 +7,13 @@ def print_menu
   puts "3. Save the list to students.csv"
   puts "4. Load the list from students.csv"
   puts "9. Exit"
+
+def interactive_menu
+  loop do
+    print_menu
+    process(STDIN.gets.chomp)
+  end
+end
 
 end
 def show_students
@@ -40,12 +39,6 @@ def process(selection)
   end
 end
 
-def interactive_menu
-  loop do
-    print_menu
-    process(gets.chomp)
-  end
-end
 
 def pluralize_students(n)
   if n == 1 then "#{n} great student" else "#{n} great students" end
@@ -134,7 +127,7 @@ def input_students
   continue = create_new_student
   while continue
     puts "Please enter the name of the student".center(@width)
-    name = gets.chomp
+    name = STDIN.gets.chomp
     cohort = add_cohort
     puts "Please enter the country of birth".center(@width)
     country_of_birth = gets.chomp
@@ -246,7 +239,32 @@ def save_students
   file.close
 end
 
+
+def load_students(filename = "students.csv")
+  file = File.open("filename", "r")
+  file.readlines.each do |line|
+  name, cohort = line.chomp.split(',')
+    @students << {name: name, cohort: cohort.to_sym}
+  end
+  file.close
+end
+
+def try_load_students
+  filename = ARGV.first
+  return if filename.nil?
+  if File.exist?(filename)
+    load_students(flename)
+    puts "Loaded #{@students.count} from #{filename}"
+  else
+    puts "Sorry #{filename} doesn't exist."
+  end
+end
+
 interactive_menu
+
+try_load_students
+
+
 
 
 
