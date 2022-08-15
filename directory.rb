@@ -30,7 +30,7 @@ def create_new_student
   elsif continue == "n"
     return false
   else 
-    puts "Invalid choice".center(@width)
+    puts "Invalid choice - please enter y or n".center(@width)
   end
   create_new_student
 end
@@ -182,8 +182,10 @@ def print_by_name_length(students)
 end
 
 def print_footer(students)
-
+  if !@students.empty?
   puts "Overall, we have #{pluralize_students @students.count}".center(@width)
+  else
+  end
 end
 
 
