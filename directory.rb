@@ -246,15 +246,20 @@ def print_footer
   end
 end
 
-def save_students
-  file = File.open("students.csv", "w")
+def save_students(filename = @default_filename)
+  file = File.open("filename", "w")
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
     file.puts csv_line
   end
   file.close
+  puts
+  puts  "*** File saved successfully ***"
+  puts
 end
+
+
 
 
 def load_students(filename = @default_filename)
@@ -264,6 +269,10 @@ def load_students(filename = @default_filename)
     add_student(name, cohort, country_of_birth, hobbies)
   end
   file.close
+  puts
+  puts  "*** File loaded successfully ***"
+  puts  "*** Using: #{filename}"
+  puts
 end
 
 def try_load_students
