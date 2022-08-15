@@ -29,9 +29,14 @@ def process(selection)
   when "2"
     show_students
   when "3"
-    save_students
+    puts  "Please enter the name of the file (eg. data.csv)"
+    save_filename = gets.chomp
+    save_filename.empty? ? save_students : save_students(save_filename)
   when "4"
-    load_students
+    puts  "Please enter the name of the file (eg. data.csv)" 
+    puts  "or leave empty to open the default file"
+    load_filename = gets.chomp
+    load_filename.empty? ? load_students : load_students(load_filename)
   when "9"
     exit
   else
