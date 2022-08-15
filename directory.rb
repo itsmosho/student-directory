@@ -23,18 +23,17 @@ def print_header
 end
 
 def print_by_name_length(students)
-  puts "Names with maximum characters of: (Please enter a number)"
-  max_length = gets.chomp
+
   number_of_matches = 0
   students.each do |student|
-    if student[:name].length <= max_length.to_i
+    if student[:name].length <= 12
     puts "#{student[:name]} (#{student[:cohort]} cohort)"
     number_of_matches += 1
     else
     end
 end
   puts
-  puts "We have #{number_of_matches} students with a name of maximum #{max_length} characters"
+  puts "We have #{number_of_matches} students with a name of maximum 12 characters"
   puts
 end
 def print_footer(students)
