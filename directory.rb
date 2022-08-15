@@ -46,6 +46,20 @@ end
 
 @width = 50
 
+def divider
+  puts "-------------".center(@width)
+end
+
+@loaded_filename = ""
+@default_filename = "students.csv"
+
+def header_menu
+  divider
+  puts "-- Student Directory".center(@width)
+  puts "-- Using file: #{@loaded_filename}".center(@width)
+  divider
+end
+
 
 @cohorts = {
   January: 15,
@@ -156,7 +170,7 @@ end
 def print_header
   if !@students.empty?
   puts "The students of Villains Academy".center(@width)
-  puts "--------------".center(@width)
+  divider
   end
 end
 
@@ -243,7 +257,7 @@ def save_students
 end
 
 
-def load_students(filename = "students.csv")
+def load_students(filename = @default_filename)
   file = File.open(filename, "r")
   file.readlines.each do |line|
   name, cohort, country_of_birth, hobbies = line.chomp.split(',')
@@ -256,12 +270,12 @@ def try_load_students
   filename = ARGV.first
   if filename.nil?
     puts
-    puts "Loaded the default file: students.csv"
+    puts "Loaded the default file: #{@default_filename}"
     puts
+    @loaded_filename = @default_filename
     load_students
   elsif File.exists?(filename) # if it exists
     load_students(flename)
-    puts "Loaded #{@students.count} from #{filename}".center(@width)
   else
     puts "Sorry #{filename} doesn't exist."
     exit
