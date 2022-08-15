@@ -1,4 +1,4 @@
-@students = []
+@students = []  #empty array accessible to all methods
 
 
 def interactive_menu
@@ -244,9 +244,9 @@ end
 
 
 def load_students(filename = "students.csv")
-  file = File.open("filename", "r")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
-  name, cohort = line.chomp.split(',')
+  name, cohort, country_of_birth, hobbies = line.chomp.split(',')
     add_student(name, cohort, country_of_birth, hobbies)
   end
   file.close
@@ -254,12 +254,17 @@ end
 
 def try_load_students
   filename = ARGV.first
-  return if filename.nil?
-  if File.exist?(filename)
+  if filename.nil?
+    puts
+    puts "Loaded the default file: students.csv"
+    puts
+    load_students
+  elsif File.exists?(filename) # if it exists
     load_students(flename)
-    puts "Loaded #{@students.count} from #{filename}"
+    puts "Loaded #{@students.count} from #{filename}".center(@width)
   else
     puts "Sorry #{filename} doesn't exist."
+    exit
   end
 end
 
