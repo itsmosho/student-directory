@@ -1,3 +1,8 @@
+require 'csv'
+
+@loaded_filename = ""
+@default_filename = "students.csv"
+
 @students = []  #empty array accessible to all methods
 
 
@@ -252,12 +257,11 @@ def print_footer
 end
 
 def save_students(filename = @default_filename)
-  file = File.open(filename, "w") do |file|
+  CSV.open(filename, "wb") do |csv|
   @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+  csv << [student[:name], student[:cohort], student[:country_of_birth], student[:hobbies]]
   end
+  @loaded_filename = filename
   puts
   puts  "*** Saved successfully to #{filename} ***"
   puts
@@ -267,15 +271,27 @@ end
 
 
 def load_students(filename = @default_filename)
-  file = File.open(filename, "r") do |file|
-  file.readlines.each do |line|
-  name, cohort, country_of_birth, hobbies = line.chomp.split(',')
-  add_student(name, cohort, country_of_birth, hobbies)
+  if File.exists?(filename)
+    CSV.foreach(filename) do |row|
+      name, cohort, country_of_birth, hobbies = row
+      add_student(name, cohort, country_of_birth, hobbies)
   end
+  @loaded_filename = filename
   puts
   puts  "*** File loaded successfully ***"
   puts  "*** Using: #{filename}"
   puts
+  else
+    if filename == @default_filename
+      puts "The default file #{@default_filename} was not found"
+      File.write("students.csv", "")
+      @loaded_filename = filename
+      puts "A new #{@default_filename} was created"
+    else 
+      puts "*** WARNING *** File #{filename} not found"
+      puts "Using #{@loaded_filename}"
+    end
+  end  
 end
 
 def try_load_students
@@ -286,7 +302,10 @@ def try_load_students
     puts
     @loaded_filename = @default_filename
     load_students
-  elsif File.exists?(filename) # if it exists
+      return
+  end  
+  if File.exists?(filename)
+    @loaded_filename = filename
     load_students(flename)
   else
     puts "Sorry #{filename} doesn't exist."
@@ -306,6 +325,5 @@ try_load_students
 #print_header
 #print_student_list(@students)
 #print_footer(@students)
-
 
 
