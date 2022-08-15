@@ -1,27 +1,35 @@
-def interactive_menu
-  students = []
-  loop do
-  # print the menu and ask the user what to do
+@students = []
+
+def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
   puts "9. Exit"
-  #read the input and save it into a variable
-  selection = gets.chomp
-  # do what the user has asked
+end
+
+def show_students
+  print_header
+  print_students_list
+  print_footer
+end  
+
+def process(selection)
   case selection
   when "1"
-    students = input_students
+    input_students
   when "2"
-    print_header
-    print(students)
-    print_footer(students)
+    show_students
   when "9"
-    exit #causes program to terminate
+    exit
   else
-    puts "I don't know what you meant, try again"
-  #repeatfrom step 1
+    puts "I don't know what you mean, try again"
   end
 end
+
+def interactive_menu
+  loop do
+    print_menu
+    process(gets.chomp)
+  end
 end
 
 def pluralize_students(n)
@@ -30,7 +38,6 @@ end
 
 @width = 50
 
-@students = []
 
 @cohorts = {
   January: 15,
@@ -142,8 +149,8 @@ def print_header
   end
 end
 
-def print(students)
-  if students.empty?
+def print_students_list
+  if @students.empty?
     puts "no students available".center(@width)
   else
     i = 0
@@ -207,7 +214,7 @@ def print_by_name_length(students)
   puts
 end
 
-def print_footer(students)
+def print_footer
   if !@students.empty?
   puts "Overall, we have #{pluralize_students @students.count}".center(@width)
   else
